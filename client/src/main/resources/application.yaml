@@ -4,7 +4,21 @@ spring:
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}
-
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1536
+        distance-type: COSINE_DISTANCE
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 10MB
+      max-file-size: 10MB
+  datasource:
+    url: ${PS_DB_URL:jdbc:postgresql://localhost:5432/aicustomersupportdb}
+    username: ${PS_DB_USER:postgres}
+    password: ${PS_DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
 
 logging:
   pattern:
