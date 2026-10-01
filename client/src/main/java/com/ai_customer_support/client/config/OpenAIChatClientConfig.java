@@ -9,6 +9,11 @@ import org.springframework.context.annotation.Configuration;
 public class OpenAIChatClientConfig {
 
     private static final String DEFAULT_USER_MESSAGE = "What is your purpose and how can you help me?";
+    private static final String DEFAULT_SYSTEM_MESSAGE = """
+        You are an AI customer support assistant.\s
+        Answer user questions clearly, accurately, and professionally.\s
+        If you are unsure about an answer, state that you do not have enough information instead of making up facts.\s
+        """;
     private static final String MODEL = "gpt-5-mini";
 
     @Bean(name="openaiChatClient")
@@ -17,6 +22,7 @@ public class OpenAIChatClientConfig {
                 .model(MODEL);
 
         return chatClientBuilder
+            .defaultSystem(DEFAULT_SYSTEM_MESSAGE)
             .defaultOptions(options)
             .defaultUser(DEFAULT_USER_MESSAGE)
             .build();
