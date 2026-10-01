@@ -15,11 +15,12 @@ public class OpenAIChatClientConfig {
         If you are unsure about an answer, state that you do not have enough information instead of making up facts.\s
         """;
     private static final String MODEL = "gpt-5-mini";
+    private static final String MODEL_VERBOSITY = "low";
 
     @Bean(name="openaiChatClient")
     public ChatClient chatClient(ChatClient.Builder chatClientBuilder) {
         var options = OpenAiChatOptions.builder()
-                .model(MODEL);
+                .model(MODEL).verbosity(MODEL_VERBOSITY);
 
         return chatClientBuilder
             .defaultSystem(DEFAULT_SYSTEM_MESSAGE)
