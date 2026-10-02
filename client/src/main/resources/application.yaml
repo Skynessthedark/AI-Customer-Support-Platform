@@ -19,6 +19,8 @@ spring:
     username: ${PS_DB_USER:postgres}
     password: ${PS_DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
+  jpa:
+    defer-datasource-initialization: true
 
 logging:
   pattern:
@@ -30,3 +32,19 @@ logging:
           chat:
             client:
               advisor: DEBUG
+
+document-loader:
+  file-allowed-content-types:
+    - "text/markdown"
+    - "text/plain"
+    - "application/pdf"
+    - "text/csv"
+    - "text/html"
+    - "application/msword"
+    - "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    - "application/vnd.ms-excel"
+    - "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    - "application/vnd.ms-powerpoint"
+    - "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+  chunk-size: 200
+  chunk-max-num: 600

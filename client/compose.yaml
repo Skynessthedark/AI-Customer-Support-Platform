@@ -12,8 +12,9 @@ services:
       - '5432:5432'
     networks:
       - db_network
-    # volumes:
-    #   - pgvector_data:/var/lib/postgresql/data
+    volumes:
+      - ai_cust_supp_postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
@@ -31,3 +32,7 @@ services:
 networks:
   db_network:
     driver: bridge
+
+volumes:
+  ai_cust_supp_postgres_data:
+    driver: local
