@@ -88,6 +88,7 @@ public class CompanyDocumentService {
     private TextSplitter getTextSplitter() {
         return TokenTextSplitter.builder()
                 .withChunkSize(documentLoaderProperties.getChunkSize())
+                .withChunkOverlap(documentLoaderProperties.getChunkOverlap())
                 .withMaxNumChunks(documentLoaderProperties.getChunkMaxNum())
                 .build();
     }

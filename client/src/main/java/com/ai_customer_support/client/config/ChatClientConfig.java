@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OpenAIChatClientConfig {
+public class ChatClientConfig {
 
     private static final String DEFAULT_USER_MESSAGE = "What is your purpose and how can you help me?";
     private static final String DEFAULT_SYSTEM_MESSAGE = """
@@ -17,7 +17,7 @@ public class OpenAIChatClientConfig {
     private static final String MODEL = "gpt-5-mini";
     private static final String MODEL_VERBOSITY = "low";
 
-    @Bean(name="openaiChatClient")
+    @Bean
     public ChatClient chatClient(ChatClient.Builder chatClientBuilder) {
         var options = OpenAiChatOptions.builder()
                 .model(MODEL).verbosity(MODEL_VERBOSITY);

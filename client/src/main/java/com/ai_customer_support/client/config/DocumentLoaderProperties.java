@@ -11,6 +11,7 @@ public class DocumentLoaderProperties {
 
     private List<String> fileAllowedContentTypes;
     private int chunkSize;
+    private int chunkOverlap;
     private int chunkMaxNum;
 
     public List<String> getFileAllowedContentTypes() {
@@ -35,5 +36,13 @@ public class DocumentLoaderProperties {
 
     public void setChunkMaxNum(int chunkMaxNum) {
         this.chunkMaxNum = chunkMaxNum;
+    }
+
+    public int getChunkOverlap() {
+        return chunkOverlap;
+    }
+
+    public void setChunkOverlap(int chunkOverlap) {
+        this.chunkOverlap = chunkOverlap;
     }
 }
