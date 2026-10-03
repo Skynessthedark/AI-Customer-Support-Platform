@@ -49,3 +49,7 @@ document-loader:
   chunk-size: 200
   chunk-max-num: 600
   min-chunk-size-chars: 100
+
+test:
+  relevancy:
+    min-score: 0.7
