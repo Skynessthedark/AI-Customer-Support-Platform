@@ -27,6 +27,7 @@ public class CompanyDocumentService {
     private static final String COMPANY_ID = "companyId";
     private static final String DOCUMENT_TITLE = "documentTitle";
     private static final String COMPANY_AUTHORIZED_PERSON_EMAIL = "companyAuthorizedPersonEmail";
+    private static final String COMPANY_DOCUMENT_ID = "companyDocumentId";
 
     private final VectorStore vectorStore;
     private final DocumentLoaderProperties documentLoaderProperties;
@@ -47,8 +48,6 @@ public class CompanyDocumentService {
 
             TextSplitter splitter = getTextSplitter();
             vectorStore.add(splitter.split(documents));
-
-            saveCompanyDocument(company, documentInfo);
             
             return true;
         }catch(InvalidDocumentInfoException e){
@@ -61,18 +60,19 @@ public class CompanyDocumentService {
 
     private List<Document> prepareDocuments(Company company,MultipartFile document, CompanyDocumentInfo documentInfo) throws InvalidDocumentInfoException {
         validateDocumentInfo(company, documentInfo);
+        CompanyDocument savedDocument = saveAndReturnCompanyDocument(company, documentInfo);
 
         TikaDocumentReader reader = new TikaDocumentReader(document.getResource());
         List<Document> documents = reader.get();
-        setMetaDataForDocument(documents, documentInfo);
+        setMetaDataForDocument(documents, documentInfo, savedDocument.getId());
         return documents;
     }
 
-    private void saveCompanyDocument(Company company, CompanyDocumentInfo documentInfo) {
+    private CompanyDocument saveAndReturnCompanyDocument(Company company, CompanyDocumentInfo documentInfo) {
         CompanyDocument companyDocument = new CompanyDocument();
         companyDocument.setCompany(company);
         companyDocument.setDocumentTitle(documentInfo.documentTitle());
-        companyDocumentRepository.save(companyDocument);
+        return companyDocumentRepository.save(companyDocument);
     }
 
     private void validateDocumentInfo(Company company, CompanyDocumentInfo documentInfo) throws InvalidDocumentInfoException {
@@ -88,14 +88,15 @@ public class CompanyDocumentService {
     private TextSplitter getTextSplitter() {
         return TokenTextSplitter.builder()
                 .withChunkSize(documentLoaderProperties.getChunkSize())
-                .withChunkOverlap(documentLoaderProperties.getChunkOverlap())
+                .withMinChunkSizeChars(documentLoaderProperties.getMinChunkSizeChars())
                 .withMaxNumChunks(documentLoaderProperties.getChunkMaxNum())
                 .build();
     }
 
-    private void setMetaDataForDocument(List<Document> documents, CompanyDocumentInfo documentInfo) {
+    private void setMetaDataForDocument(List<Document> documents, CompanyDocumentInfo documentInfo, String companyDocumentId) {
         for (Document doc : documents) {
             doc.getMetadata().put(COMPANY_ID, documentInfo.companyId());
+            doc.getMetadata().put(COMPANY_DOCUMENT_ID, companyDocumentId);
             doc.getMetadata().put(DOCUMENT_TITLE, documentInfo.documentTitle());
             doc.getMetadata().put(COMPANY_AUTHORIZED_PERSON_EMAIL, documentInfo.companyAuthorizedPersonEmail());
         }
