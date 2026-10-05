@@ -3,7 +3,7 @@ package com.ai_customer_support.client.validation;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ai_customer_support.client.annotation.ValidFile;
-import com.ai_customer_support.client.config.DocumentLoaderProperties;
+import com.ai_customer_support.client.config.property.DocumentLoaderProperties;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

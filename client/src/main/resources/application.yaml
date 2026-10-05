@@ -9,6 +9,16 @@ spring:
         initialize-schema: true
         dimensions: 1536
         distance-type: COSINE_DISTANCE
+      redis:
+        uri: redis://localhost:6379
+        index-name: semantic-cache-index
+        prefix: "cache:"
+        initialize-schema: true
+    vectorstore-redis-semantic-cache:
+      enabled: true
+      threshold: 0.7
+      ttl: 3600s
+        
   servlet:
     multipart:
       enabled: true
@@ -21,6 +31,10 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     defer-datasource-initialization: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 logging:
   pattern:
@@ -53,3 +67,11 @@ document-loader:
 test:
   relevancy:
     min-score: 0.7
+
+audit:
+  token-usage:
+    enabled: true
+
+similarity-search:
+  top-k: 3
+  threshold: 0.7

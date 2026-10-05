@@ -26,8 +26,17 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     networks:
       - db_network
-    # volumes:
-    #   - pgadmin_data:/var/lib/pgadmin
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+  redis-stack:
+    image: redis/redis-stack:latest
+    container_name: redis-stack
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - redis_data:/data
+    restart: always
 
 networks:
   db_network:
@@ -35,4 +44,8 @@ networks:
 
 volumes:
   ai_cust_supp_postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+  redis_data:
     driver: local

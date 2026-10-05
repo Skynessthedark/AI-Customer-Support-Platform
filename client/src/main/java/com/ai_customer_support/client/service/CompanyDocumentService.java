@@ -12,7 +12,7 @@ import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ai_customer_support.client.config.DocumentLoaderProperties;
+import com.ai_customer_support.client.config.property.DocumentLoaderProperties;
 import com.ai_customer_support.client.dto.CompanyDocumentInfo;
 import com.ai_customer_support.client.exception.InvalidDocumentInfoException;
 import com.ai_customer_support.client.model.Company;

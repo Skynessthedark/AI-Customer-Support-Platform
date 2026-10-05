@@ -1,4 +1,4 @@
-package com.ai_customer_support.client.config;
+package com.ai_customer_support.client.config.property;
 
 import java.util.List;
 
