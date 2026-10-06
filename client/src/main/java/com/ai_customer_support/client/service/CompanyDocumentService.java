@@ -72,6 +72,7 @@ public class CompanyDocumentService {
         CompanyDocument companyDocument = new CompanyDocument();
         companyDocument.setCompany(company);
         companyDocument.setDocumentTitle(documentInfo.documentTitle());
+        companyService.increaseAndUpdateKnowledgeVersion(company);
         return companyDocumentRepository.save(companyDocument);
     }
 

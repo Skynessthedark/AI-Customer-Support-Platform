@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS companies (
     authorized_person_email VARCHAR(255) NOT NULL UNIQUE,
     authorized_person_name VARCHAR(255),
     authorized_person_phone VARCHAR(255),
+    knowledge_version INTEGER DEFAULT 0,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );
@@ -27,7 +28,10 @@ INSERT INTO companies (
     name,
     authorized_person_email,
     authorized_person_name,
-    authorized_person_phone
+    authorized_person_phone,
+	knowledge_version,
+	created_at,
+	updated_at
 )
 VALUES
 (
@@ -35,12 +39,28 @@ VALUES
     'Acme Technologies',
     'john.doe@acme.com',
     'John Doe',
-    '+1-555-0100'
+    '+1-555-0100',
+	0,
+	CURRENT_TIMESTAMP,
+	CURRENT_TIMESTAMP
 ),
 (
     '22222222-2222-2222-2222-222222222222',
     'TechCorp Solutions',
     'jane.smith@techcorp.com',
     'Jane Smith',
-    '+1-555-0200'
+    '+1-555-0200',
+	0,
+	CURRENT_TIMESTAMP,
+	CURRENT_TIMESTAMP
+),
+(
+    '22222223-2223-2223-2223-222222222223',
+    'Goksen Technologies',
+    'geralt.rivia@goksentech.com',
+    'Geralt of Rivia',
+    '+1-555-0300',
+	0,
+	CURRENT_TIMESTAMP,
+	CURRENT_TIMESTAMP
 );

@@ -34,9 +34,4 @@ public class RedisConfig {
                 .prefix(prefix)
                 .build();
     }
-
-    @Bean
-    public SemanticCacheAdvisor semanticCacheAdvisor(SemanticCache semanticCache) {
-        return SemanticCacheAdvisor.builder().cache(semanticCache).build();
-    }
 }

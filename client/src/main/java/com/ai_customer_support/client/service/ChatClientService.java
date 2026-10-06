@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import com.ai_customer_support.client.model.Company;
+
 @Service
 public class ChatClientService {
 
@@ -13,6 +15,7 @@ public class ChatClientService {
     private static final String CACHE_COMPANY_ID = "company_id";
     private static final String COMPANY_NAME = "companyName";
     private static final String NO_RELEVANT_CONTEXT_MESSAGE = "No relevant context found for the provided message.";
+    private static final String CACHE_KNOWLEDGE = "knowledge";
 
     private final ChatClient chatClient;
     private final CompanyService companyService;
@@ -32,12 +35,15 @@ public class ChatClientService {
             return NO_RELEVANT_CONTEXT_MESSAGE;
         }
 
+        Company company = companyService.getCompany(companyId);
+
         return chatClient.prompt()
             .system(promptSystemSpec -> promptSystemSpec.text(companySystemPromptTemplate)
-                        .param(COMPANY_NAME, companyService.getCompanyName(companyId))
+                        .param(COMPANY_NAME, company.getName())
                         .param(DOCUMENTS, similarContext))
             .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, username)
-                                    .param(CACHE_COMPANY_ID, companyId))
+                                    .param(CACHE_COMPANY_ID, companyId)
+                                    .param(CACHE_KNOWLEDGE, company.getKnowledgeVersion()))
             .user(message)
             .call()
             .content();

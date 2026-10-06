@@ -78,4 +78,9 @@ public class CompanyService {
     public String getCompanyName(String companyId) {
         return getCompany(companyId).getName();
     }
+
+    public void increaseAndUpdateKnowledgeVersion(Company company){
+        company.increaseKnowledgeVersion();
+        companyRepository.save(company);
+    }
 }

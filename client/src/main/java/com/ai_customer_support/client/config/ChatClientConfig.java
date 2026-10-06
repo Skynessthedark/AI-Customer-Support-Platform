@@ -1,10 +1,11 @@
 package com.ai_customer_support.client.config;
 
-import org.springframework.ai.chat.cache.semantic.SemanticCacheAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.ai_customer_support.client.config.advisor.CompanySemanticCacheAdvisor;
 
 @Configuration
 public class ChatClientConfig {
@@ -19,12 +20,12 @@ public class ChatClientConfig {
     private static final String MODEL_VERBOSITY = "low";
 
     @Bean
-    public ChatClient chatClient(ChatClient.Builder chatClientBuilder, SemanticCacheAdvisor semanticCacheAdvisor) {
+    public ChatClient chatClient(ChatClient.Builder chatClientBuilder, CompanySemanticCacheAdvisor companySemanticCacheAdvisor) {
         var options = OpenAiChatOptions.builder()
                 .model(MODEL).verbosity(MODEL_VERBOSITY);
 
         return chatClientBuilder
-            .defaultAdvisors(semanticCacheAdvisor)
+            .defaultAdvisors(companySemanticCacheAdvisor)
             .defaultSystem(DEFAULT_SYSTEM_MESSAGE)
             .defaultOptions(options)
             .defaultUser(DEFAULT_USER_MESSAGE)

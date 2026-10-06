@@ -1,5 +1,7 @@
 package com.ai_customer_support.client.model;
 
+import java.beans.Transient;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -15,6 +17,7 @@ public class Company extends EntityItem {
 
     private String authorizedPersonName;
     private String authorizedPersonPhone;
+    private int knowledgeVersion = 0;
 
     public String getName() {
         return name;
@@ -46,6 +49,19 @@ public class Company extends EntityItem {
 
     public void setAuthorizedPersonEmail(String authorizedPersonEmail) {
         this.authorizedPersonEmail = authorizedPersonEmail;
+    }
+
+    public void increaseKnowledgeVersion(){
+        this.knowledgeVersion++;
+    }
+
+    public int getKnowledgeVersion() {
+        return knowledgeVersion;
+    }
+
+    @Transient 
+    public void setKnowledgeVersion(int knowledgeVersion) {
+        this.knowledgeVersion = knowledgeVersion;
     }
 
 }
