@@ -16,7 +16,7 @@ spring:
         initialize-schema: true
     vectorstore-redis-semantic-cache:
       enabled: true
-      threshold: 0.7
+      threshold: 0.9
       ttl: 3600s
         
   servlet:
@@ -42,6 +42,7 @@ logging:
   pattern:
     console: "%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n"
   level:
+    # root: DEBUG
     org:
       springframework:
         ai:
@@ -76,4 +77,4 @@ audit:
 
 similarity-search:
   top-k: 3
-  threshold: 0.7
+  threshold: 0.5

@@ -1,7 +1,9 @@
 package com.ai_customer_support.client.config;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.vectorstore.VectorStoreChatMemoryAdvisor;
 import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,15 +22,24 @@ public class ChatClientConfig {
     private static final String MODEL_VERBOSITY = "low";
 
     @Bean
-    public ChatClient chatClient(ChatClient.Builder chatClientBuilder, CompanySemanticCacheAdvisor companySemanticCacheAdvisor) {
+    public ChatClient chatClient(ChatClient.Builder chatClientBuilder,
+                                 CompanySemanticCacheAdvisor companySemanticCacheAdvisor,
+                                 VectorStoreChatMemoryAdvisor vectorStoreChatMemoryAdvisor) {
         var options = OpenAiChatOptions.builder()
                 .model(MODEL).verbosity(MODEL_VERBOSITY);
 
         return chatClientBuilder
-            .defaultAdvisors(companySemanticCacheAdvisor)
+            .defaultAdvisors(vectorStoreChatMemoryAdvisor, companySemanticCacheAdvisor)
             .defaultSystem(DEFAULT_SYSTEM_MESSAGE)
             .defaultOptions(options)
             .defaultUser(DEFAULT_USER_MESSAGE)
+            .build();
+    }
+
+    @Bean
+    public VectorStoreChatMemoryAdvisor vectorStoreChatMemoryAdvisor(VectorStore vectorStore) {
+        return VectorStoreChatMemoryAdvisor.builder(vectorStore)
+            .defaultTopK(10)
             .build();
     }
 }
