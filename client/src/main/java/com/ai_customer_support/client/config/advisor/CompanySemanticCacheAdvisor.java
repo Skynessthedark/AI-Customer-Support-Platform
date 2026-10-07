@@ -12,6 +12,7 @@ import org.springframework.ai.chat.client.ChatClientRequest;
 import org.springframework.ai.chat.client.ChatClientResponse;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisor;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisorChain;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Component;
 
 @Component 
@@ -33,8 +34,9 @@ public class CompanySemanticCacheAdvisor implements CallAdvisor{
     public ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
         String companyId = (String) chatClientRequest.context().get(CACHE_COMPANY_ID);
         String knowledgeVersion = String.valueOf(chatClientRequest.context().get(CACHE_KNOWLEDGE));
+        String conversationId = String.valueOf(chatClientRequest.context().get(ChatMemory.CONVERSATION_ID));
 
-        String contextHash = createContextHash(companyId, knowledgeVersion);
+        String contextHash = createContextHash(companyId, knowledgeVersion, conversationId);
 
         String query = chatClientRequest.prompt().getUserMessage().getText();
 
@@ -58,8 +60,8 @@ public class CompanySemanticCacheAdvisor implements CallAdvisor{
         return response;
     }
 
-    private String createContextHash(String companyId, String knowledgeVersion) {
-        String context = companyId + ":" + knowledgeVersion;
+    private String createContextHash(String companyId, String knowledgeVersion, String conversationId) {
+        String context = companyId + ":" + knowledgeVersion + ":" + conversationId;
 
         try {
             MessageDigest digest = MessageDigest.getInstance(ALGORTIHM_TYPE);

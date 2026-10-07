@@ -9,6 +9,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.filter.Filter.Expression;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,14 @@ public class CompanyService {
     private static final String COMPANY_ID = "companyId";
 
     private final CompanyRepository companyRepository;
-    private final VectorStore vectorStore;
+    private final VectorStore companyVectorStore;
     private final SimilaritySearchProperties similaritySearchProperties;
 
-    public CompanyService(CompanyRepository companyRepository, VectorStore vectorStore, SimilaritySearchProperties similaritySearchProperties) {
+    public CompanyService(CompanyRepository companyRepository,
+             @Qualifier("companyVectorStore") VectorStore companyVectorStore,
+                SimilaritySearchProperties similaritySearchProperties) {
         this.companyRepository = companyRepository;
-        this.vectorStore = vectorStore;
+        this.companyVectorStore = companyVectorStore;
         this.similaritySearchProperties = similaritySearchProperties;
     }
 
@@ -58,7 +61,7 @@ public class CompanyService {
                 .similarityThreshold(similaritySearchProperties.getThreshold())
                 .filterExpression(getFilterExpressionForQuery(companyId))
                 .build();
-        List<Document> similarDocs = vectorStore.similaritySearch(req);
+        List<Document> similarDocs = companyVectorStore.similaritySearch(req);
 
         if(similarDocs.isEmpty()) {
             LOGGER.info("No similar context found for companyId: {} and message: {}", companyId, message);

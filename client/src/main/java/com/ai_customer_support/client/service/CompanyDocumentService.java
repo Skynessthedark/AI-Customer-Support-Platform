@@ -9,6 +9,7 @@ import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TextSplitter;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,13 +30,16 @@ public class CompanyDocumentService {
     private static final String COMPANY_AUTHORIZED_PERSON_EMAIL = "companyAuthorizedPersonEmail";
     private static final String COMPANY_DOCUMENT_ID = "companyDocumentId";
 
-    private final VectorStore vectorStore;
+    private final VectorStore companyVectorStore;
     private final DocumentLoaderProperties documentLoaderProperties;
     private final CompanyService companyService;
     private final CompanyDocumentRepository companyDocumentRepository;
 
-    public CompanyDocumentService(VectorStore vectorStore, DocumentLoaderProperties documentLoaderProperties, com.ai_customer_support.client.repository.CompanyDocumentRepository companyDocumentRepository, com.ai_customer_support.client.service.CompanyService companyService) {
-        this.vectorStore = vectorStore;
+    public CompanyDocumentService(@Qualifier("companyVectorStore") VectorStore companyVectorStore,
+                                    DocumentLoaderProperties documentLoaderProperties,
+                                    CompanyDocumentRepository companyDocumentRepository, 
+                                    CompanyService companyService) {
+        this.companyVectorStore = companyVectorStore;
         this.documentLoaderProperties = documentLoaderProperties;
         this.companyDocumentRepository = companyDocumentRepository;
         this.companyService = companyService;
@@ -47,7 +51,7 @@ public class CompanyDocumentService {
             List<Document> documents = prepareDocuments(company,document, documentInfo);
 
             TextSplitter splitter = getTextSplitter();
-            vectorStore.add(splitter.split(documents));
+            companyVectorStore.add(splitter.split(documents));
             
             return true;
         }catch(InvalidDocumentInfoException e){
