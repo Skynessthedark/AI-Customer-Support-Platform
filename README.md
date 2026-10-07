@@ -72,11 +72,37 @@ Implemented:
 * Retrieval-Augmented Generation
 * Company-specific document retrieval
 
+### Phase 3 — Redis ✅
+
+Redis is integrated to improve response performance and maintain conversation context.
+
+```text
+                    ┌──────────────┐
+Customer Question → │ Redis Cache? │
+                    └──────┬───────┘
+                       Hit  │  Miss
+                        ↓   ↓
+                     Answer  LLM
+                              ↓
+                         Redis Cache
+```
+
+Implemented:
+
+* Semantic response caching
+* Cache hit / miss handling
+* Cache TTL
+* Cache invalidation
+* Conversation memory
+* User-specific conversation context
+* Redis integration
+* Redis integration testing with Testcontainers
+
 ## API
 
 ### Chat
 
-```http
+```text
 GET /api/chat
 Headers:
   companyId: <company-id>
@@ -88,7 +114,7 @@ Query:
 
 ### Document Upload
 
-```http
+```text
 POST /api/company/document/upload
 Content-Type: multipart/form-data
 
@@ -104,14 +130,16 @@ Parts:
 * Spring AI
 * PostgreSQL
 * PGVector
+* Redis
 * LLM
 * Embedding Model
+* Testcontainers
 
 ## Roadmap
 
 * [x] Phase 1 — Spring Boot + Spring AI
 * [x] Phase 2 — RAG + PGVector
-* [ ] Phase 3 — Redis
+* [x] Phase 3 — Redis
 * [ ] Phase 4 — Microservices
 * [ ] Phase 5 — Kafka
 * [ ] Phase 6 — Security + Multi-Tenancy
@@ -121,20 +149,20 @@ Parts:
 ## Architecture
 
 ```text
-                    Company Document
-                           ↓
-                  Document Processing
-                           ↓
-                    Text Splitting
-                           ↓
-                       Embeddings
-                           ↓
-                        PGVector
-                           ↑
-                           │
-                    Similarity Search
-                           │
-Customer Question ─────────┘
+                         Company Document
+                                ↓
+                       Document Processing
+                                ↓
+                         Text Splitting
+                                ↓
+                            Embeddings
+                                ↓
+                             PGVector
+                                ↑
+                                │
+                         Similarity Search
+                                │
+Customer Question ──────────────┘
            ↓
       Relevant Context
            ↓
@@ -143,7 +171,11 @@ Customer Question ─────────┘
            LLM
            ↓
       AI Response
+           ↓
+      Redis Cache
 ```
+
+Conversation memory is also managed through Redis to maintain context across chat interactions.
 
 ## Project Structure
 
@@ -155,6 +187,8 @@ Service
 Repository / Spring AI
     ↓
 PostgreSQL / PGVector
+    ↓
+Redis
 ```
 
-The platform will evolve with additional capabilities including Redis, microservices, Kafka, security, multi-tenancy, observability, AI evaluation, and deployment infrastructure.
+The platform will evolve with additional capabilities including microservices, Kafka, security, multi-tenancy, observability, AI evaluation, and deployment infrastructure.
