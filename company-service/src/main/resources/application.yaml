@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: client    
+  datasource:
+    url: ${PS_DB_URL:jdbc:postgresql://localhost:5432/companydb}
+    username: ${PS_DB_USER:postgres}
+    password: ${PS_DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+
+logging:
+  pattern:
+    console: "%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n"
