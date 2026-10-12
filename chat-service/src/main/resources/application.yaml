@@ -1,0 +1,77 @@
+server:
+  port: '8083'
+
+spring:
+  application:
+    name: chat-service
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1536
+        distance-type: COSINE_DISTANCE
+      redis:
+        uri: redis://localhost:6379
+        index-name: semantic-cache-index
+        prefix: "cache:"
+        initialize-schema: true
+    vectorstore-redis-semantic-cache:
+      enabled: true
+      threshold: 0.9
+      ttl: 3600s
+        
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 10MB
+      max-file-size: 10MB
+  datasource:
+    url: ${PS_DB_URL}
+    username: ${PS_DB_USER}
+    password: ${PS_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+logging:
+  pattern:
+    console: "%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n"
+  level:
+    # root: DEBUG
+    org:
+      springframework:
+        ai:
+          chat:
+            client:
+              advisor: DEBUG
+
+test:
+  relevancy:
+    min-score: 0.7
+
+audit:
+  token-usage:
+    enabled: true
+
+services:
+  company:
+    url: ${COMPANY_SERVICE_URL}
+    endpoints:
+      company-by-id: /api/company/{id}
+      knowledge-version-increment: /api/company/{id}/increase-knowledge-version
+  company-document:
+    url: ${COMPANY_DOCUMENT_SERVICE_URL}
+    endpoints: 
+      upload: /api/company-document/upload
+      similar-context: /api/company-document/similar-context

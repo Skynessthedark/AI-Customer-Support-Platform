@@ -1,22 +1,35 @@
 services:
+  postgres-db:
+    image: postgres:latest
+    container_name: companyservicedb_container
+    environment:
+      POSTGRES_USER: ${PS_DB_USER}
+      POSTGRES_PASSWORD: ${PS_DB_PASSWORD}
+      POSTGRES_DB: ${PS_DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - companyservice_ps_data:/var/lib/postgresql
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin4_container
+    container_name: pgadmin4_company_container
     restart: always
     ports:
-      - "5050:80"
+      - "5051:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     networks:
       - db_network
     volumes:
-      - pgadmin_data:/var/lib/pgadmin
+      - pgadmin_company_data:/var/lib/pgadmin
 
 networks:
   db_network:
     driver: bridge
 
 volumes:
-  pgadmin_data:
+  pgadmin_company_data:
+    driver: local
+  companyservice_ps_data:
     driver: local

@@ -1,0 +1,63 @@
+server:
+  port: '8082'
+spring:
+  application:
+    name: company-document-service
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1536
+        distance-type: COSINE_DISTANCE
+        
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 10MB
+      max-file-size: 10MB
+  datasource:
+    url: ${PS_DB_URL}
+    username: ${PS_DB_USER}
+    password: ${PS_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  pattern:
+    console: "%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n"
+
+document-loader:
+  file-allowed-content-types:
+    - "text/markdown"
+    - "text/plain"
+    - "application/pdf"
+    - "text/csv"
+    - "text/html"
+    - "application/msword"
+    - "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    - "application/vnd.ms-excel"
+    - "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    - "application/vnd.ms-powerpoint"
+    - "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+  chunk-size: 200
+  chunk-max-num: 600
+  min-chunk-size-chars: 100
+
+similarity-search:
+  top-k: 3
+  threshold: 0.5
+
+services:
+  company:
+    url: ${COMPANY_SERVICE_URL}
+    endpoints:
+      company-by-id: /api/company/{id}
+      knowledge-version-increment: /api/company/{id}/increase-knowledge-version
