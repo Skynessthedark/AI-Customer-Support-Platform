@@ -1,11 +1,14 @@
 package com.ai_customer_support.chatservice.aspect.advice;
 
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ai_customer_support.chatservice.exception.CompanyServiceException;
+import com.ai_customer_support.chatservice.exception.CompanyServiceNetworkException;
 import com.ai_customer_support.chatservice.exception.CompanyDocumentServiceException;
+import com.ai_customer_support.chatservice.exception.CompanyDocumentServiceNetworkException;
 
 @RestControllerAdvice
 public class RestClientExceptionHandler {
@@ -33,6 +36,31 @@ public class RestClientExceptionHandler {
         problemDetail.setProperty("service", "COMPANY-DOCUMENT-SERVICE");
         problemDetail.setProperty("rawError", ex.getResponseBodyAsString());
         
+        return problemDetail;
+    }
+
+    @ExceptionHandler(CompanyServiceNetworkException.class)
+    public ProblemDetail handleCompanyServiceNetworkException(CompanyServiceNetworkException ex) {
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+            HttpStatusCode.valueOf(504),
+            ex.getMessage()
+        );
+        problemDetail.setTitle("Company Service Timeout");
+        problemDetail.setProperty("service", "COMPANY-SERVICE");
+        problemDetail.setProperty("error_type", "NETWORK_FAILURE");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(CompanyDocumentServiceNetworkException.class)
+    public ProblemDetail handleCompanyDocumentServiceNetworkException(CompanyDocumentServiceNetworkException ex) {
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatusCode.valueOf(504),
+                ex.getMessage());
+        problemDetail.setTitle("Company Document Service Timeout");
+        problemDetail.setProperty("service", "COMPANY-DOCUMENT-SERVICE");
+        problemDetail.setProperty("error_type", "NETWORK_FAILURE");
         return problemDetail;
     }
 }
