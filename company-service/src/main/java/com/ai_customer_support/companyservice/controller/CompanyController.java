@@ -24,7 +24,7 @@ public class CompanyController {
     @GetMapping("/{id}")
     public ResponseEntity<CompanyDto> get(@PathVariable(name = "id") String companyId) {
         return ResponseEntity.ok(companyService.getCompany(companyId));
-    }vector_store oluşmamış
+    }
 
     @GetMapping("/by-authorized-person/{email}")
     public ResponseEntity<CompanyDto> getByAuthorizerEmail(@PathVariable String email) {
