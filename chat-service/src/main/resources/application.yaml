@@ -1,9 +1,8 @@
-server:
-  port: '8083'
-
 spring:
   application:
     name: chat-service
+  config:
+    import: configserver:http://localhost:8884
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}
@@ -13,7 +12,7 @@ spring:
         dimensions: 1536
         distance-type: COSINE_DISTANCE
       redis:
-        uri: redis://localhost:6379
+        uri: ${REDIS_URI}
         index-name: semantic-cache-index
         prefix: "cache:"
         initialize-schema: true
@@ -39,10 +38,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  data:
-    redis:
-      host: localhost
-      port: 6379
 
 logging:
   pattern:
@@ -55,23 +50,3 @@ logging:
           chat:
             client:
               advisor: DEBUG
-
-test:
-  relevancy:
-    min-score: 0.7
-
-audit:
-  token-usage:
-    enabled: true
-
-services:
-  company:
-    url: ${COMPANY_SERVICE_URL}
-    endpoints:
-      company-by-id: /api/company/{id}
-      knowledge-version-increment: /api/company/{id}/increase-knowledge-version
-  company-document:
-    url: ${COMPANY_DOCUMENT_SERVICE_URL}
-    endpoints: 
-      upload: /api/company-document/upload
-      similar-context: /api/company-document/similar-context

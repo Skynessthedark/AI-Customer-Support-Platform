@@ -1,8 +1,8 @@
-server:
-  port: '8082'
 spring:
   application:
     name: company-document-service
+  config:
+    import: configserver:http://localhost:8084
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}
@@ -54,10 +54,3 @@ document-loader:
 similarity-search:
   top-k: 3
   threshold: 0.5
-
-services:
-  company:
-    url: ${COMPANY_SERVICE_URL}
-    endpoints:
-      company-by-id: /api/company/{id}
-      knowledge-version-increment: /api/company/{id}/increase-knowledge-version

@@ -1,9 +1,8 @@
-server:
-  port: '8081'
-
 spring:
   application:
-    name: company-service    
+    name: company-service  
+  config:
+    import: configserver:http://localhost:8084  
   datasource:
     url: ${PS_DB_URL}
     username: ${PS_DB_USER}

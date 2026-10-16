@@ -1,10 +1,10 @@
-package com.ai_customer_support.companydocument;
+package com.ai_customer_support.configserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CompanyDocumentApplicationTests {
+class ConfigServerApplicationTests {
 
 	@Test
 	void contextLoads() {

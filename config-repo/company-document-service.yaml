@@ -1,0 +1,9 @@
+server:
+  port: 8082
+
+services:
+  company:
+    url: http://localhost:8081
+    endpoints:
+      company-by-id: /api/company/{id}
+      knowledge-version-increment: /api/company/{id}/increase-knowledge-version
