@@ -1,4 +1,4 @@
-package com.ai_customer_support.client;
+package com.ai_customer_support.chatservice;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

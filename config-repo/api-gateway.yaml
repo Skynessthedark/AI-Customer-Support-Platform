@@ -1,7 +1,15 @@
 server:
   port: 8080
-      
+
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
 spring:
+  application:
+    name: api-gateway
   data:
     redis:
       host: localhost
@@ -18,8 +26,7 @@ spring:
         webflux:
           routes:
             - id: company-service
-              # uri: lb://company-service
-              uri: http://localhost:8081
+              uri: lb://COMPANY-SERVICE
               predicates:
                 - Path=/api/company/**
               filters:
@@ -30,8 +37,7 @@ spring:
                       burstCapacity: 10
                     key-resolver: "#{@companyKeyResolver}"
             - id: company-document-service
-              # uri: lb://company-document-service
-              uri: http://localhost:8082
+              uri: lb://COMPANY-DOCUMENT-SERVICE
               predicates:
                 - Path=/api/company-document/**
               filters:
@@ -42,8 +48,7 @@ spring:
                       burstCapacity: 10
                     key-resolver: "#{@companyKeyResolver}"
             - id: chat-service
-              # uri: lb://company-document-service
-              uri: http://localhost:8083
+              uri: lb://CHAT-SERVICE
               predicates:
                 - Path=/api/chat/**
               filters:

@@ -2,7 +2,7 @@ spring:
   application:
     name: chat-service
   config:
-    import: configserver:http://localhost:8884
+    import: configserver:http://localhost:8084
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}
