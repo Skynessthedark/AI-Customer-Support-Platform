@@ -38,6 +38,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  retry:
+    enabled: true
 
 logging:
   pattern:

@@ -4,11 +4,30 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "client.connection")
-public class ClientConnectionProperties {
+@ConfigurationProperties(prefix = "client.company-document.connection")
+public class CompanyDocumentClientConnectionProperties {
     private Long readTimeout = 3L;
     
     private Long connectTimeout = 3L;
+
+    private Long retryMaxAttempts = 3L;
+    private Long retryBackoffDelayMs = 500L;
+
+    public Long getRetryMaxAttempts() {
+        return retryMaxAttempts;
+    }
+
+    public void setRetryMaxAttempts(Long retryMaxAttempts) {
+        this.retryMaxAttempts = retryMaxAttempts;
+    }
+
+    public Long getRetryBackoffDelayMs() {
+        return retryBackoffDelayMs;
+    }
+
+    public void setRetryBackoffDelayMs(Long retryBackoffDelayMs) {
+        this.retryBackoffDelayMs = retryBackoffDelayMs;
+    }
 
     public Long getConnectTimeout() {
         return connectTimeout;

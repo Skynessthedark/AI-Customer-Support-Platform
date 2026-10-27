@@ -25,6 +25,15 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 client:
-  connection:
-    connect-timeout: 1
-    read-timeout: 2
+  company:
+    connection:
+      connect-timeout: 1
+      read-timeout: 2
+      retry-max-attempts: 3
+      retry-backoff-delay-ms: 500
+  company-document:
+    connection:
+      connect-timeout: 1
+      read-timeout: 2
+      retry-max-attempts: 3
+      retry-backoff-delay-ms: 500
