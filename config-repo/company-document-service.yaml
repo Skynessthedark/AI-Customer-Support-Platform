@@ -17,3 +17,5 @@ client:
   connection:
     connect-timeout: 1
     read-timeout: 2
+    retry-max-attempts: 3
+    retry-backoff-delay-ms: 500

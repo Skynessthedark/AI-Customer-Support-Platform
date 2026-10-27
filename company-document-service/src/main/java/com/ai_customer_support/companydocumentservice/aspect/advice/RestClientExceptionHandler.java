@@ -31,7 +31,7 @@ public class RestClientExceptionHandler {
             HttpStatusCode.valueOf(504),
             ex.getMessage()
         );
-        problemDetail.setTitle("Company Service Timeout");
+        problemDetail.setTitle("Company Service Connection Error");
         problemDetail.setProperty("service", "COMPANY-SERVICE");
         problemDetail.setProperty("error_type", "NETWORK_FAILURE");
         return problemDetail;

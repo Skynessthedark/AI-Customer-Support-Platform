@@ -9,6 +9,24 @@ public class ClientConnectionProperties {
     private Long readTimeout = 3L;
     
     private Long connectTimeout = 3L;
+    private Long retryMaxAttempts = 3L;
+    private Long retryBackoffDelayMs = 500L;
+    
+    public Long getRetryMaxAttempts() {
+        return retryMaxAttempts;
+    }
+
+    public void setRetryMaxAttempts(Long retryMaxAttempts) {
+        this.retryMaxAttempts = retryMaxAttempts;
+    }
+
+    public Long getRetryBackoffDelayMs() {
+        return retryBackoffDelayMs;
+    }
+
+    public void setRetryBackoffDelayMs(Long retryBackoffDelayMs) {
+        this.retryBackoffDelayMs = retryBackoffDelayMs;
+    }
 
     public Long getConnectTimeout() {
         return connectTimeout;
