@@ -52,3 +52,21 @@ logging:
           chat:
             client:
               advisor: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      companyServiceBreaker:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
+      companyDocumentServiceBreaker:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2

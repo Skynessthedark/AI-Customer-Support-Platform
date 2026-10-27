@@ -56,3 +56,14 @@ document-loader:
 similarity-search:
   top-k: 3
   threshold: 0.5
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      companyServiceBreaker:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
