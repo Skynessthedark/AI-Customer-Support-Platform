@@ -44,11 +44,11 @@ public class RestClientExceptionHandler {
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
             HttpStatusCode.valueOf(504),
-            ex.getMessage()
+                "The company information service is temporarily unavailable. Please try again later."
         );
-        problemDetail.setTitle("Company Service Connection Error");
+        problemDetail.setTitle("Service Temporarily Unavailable");
         problemDetail.setProperty("service", "COMPANY-SERVICE");
-        problemDetail.setProperty("error_type", "NETWORK_FAILURE");
+        problemDetail.setProperty("error_type", "DEPENDENCY_UNAVAILABLE");
         return problemDetail;
     }
 
@@ -57,10 +57,10 @@ public class RestClientExceptionHandler {
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatusCode.valueOf(504),
-                ex.getMessage());
-        problemDetail.setTitle("Company Document Service Connection Error");
+                "The company document information service is temporarily unavailable. Please try again later.");
+        problemDetail.setTitle("Service Temporarily Unavailable");
         problemDetail.setProperty("service", "COMPANY-DOCUMENT-SERVICE");
-        problemDetail.setProperty("error_type", "NETWORK_FAILURE");
+        problemDetail.setProperty("error_type", "DEPENDENCY_UNAVAILABLE");
         return problemDetail;
     }
 }

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.ai_customer_support.companydocumentservice.config.property.SimilaritySearchProperties;
 import com.ai_customer_support.companydocumentservice.dto.CompanyDto;
+import com.ai_customer_support.companydocumentservice.exception.CompanyServiceException;
+import com.ai_customer_support.companydocumentservice.exception.CompanyServiceNetworkException;
 
 @Service 
 public class DocumentRetrievalService {
@@ -36,7 +38,15 @@ public class DocumentRetrievalService {
 
     @SuppressWarnings("null")
     public String getSimilarContext(String companyId, String message) {
-        CompanyDto company = restService.getCompany(companyId);
+        CompanyDto company = null;
+
+        try{
+            company = restService.getCompany(companyId);
+        } catch (CompanyServiceNetworkException | CompanyServiceException e) {
+            LOGGER.error("An error occurred about Company Service. ");
+            return null;
+        }
+
         if (company == null || company.id() == null) {
             LOGGER.info("No company found by id: {}", companyId);
             return null;

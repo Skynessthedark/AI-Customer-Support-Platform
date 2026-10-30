@@ -127,14 +127,11 @@ public class RestClientConfig {
                 return (request, body, execution) -> {
                         try {
                                 return retryTemplate.execute(() -> execution.execute(request, body));
-                        } catch (Throwable throwable) {
-                                if (throwable instanceof RuntimeException) {
-                                        throw (RuntimeException) throwable;
-                                }
+                        } catch (CompanyServiceNetworkException ex) {
+                                throw ex;
+                        } catch (Exception ex) {
                                 throw new CompanyServiceNetworkException(
-                                                "Company Service Connection - Retry attempts exhausted: " + throwable
-                                                                .getMessage(),
-                                                throwable);
+                                        "Company Service Connection - Retry attempts exhausted: "+ ex.getMessage(),ex);
                         }
                 };
         }
@@ -152,15 +149,11 @@ public class RestClientConfig {
                 return (request, body, execution) -> {
                         try {
                                 return retryTemplate.execute(() -> execution.execute(request, body));
-                        } catch (Throwable throwable) {
-                                if (throwable instanceof RuntimeException) {
-                                        throw (RuntimeException) throwable;
-                                }
+                        } catch (CompanyDocumentServiceNetworkException ex) {
+                                throw ex;
+                        } catch (Exception ex) {
                                 throw new CompanyDocumentServiceNetworkException(
-                                                "Company Document Service Connection - Retry attempts exhausted: "
-                                                                + throwable
-                                                                                .getMessage(),
-                                                throwable);
+                                        "Company Document Service Connection - Retry attempts exhausted: " + ex.getMessage(), ex);
                         }
                 };
         }
@@ -186,11 +179,15 @@ public class RestClientConfig {
                 return (request, body, execution) -> {
                         try {
                                 return circuitBreaker.executeCheckedSupplier(() -> execution.execute(request, body));
-                        } catch (Throwable e) {
-                                if (e instanceof CallNotPermittedException) {
-                                        throw new RuntimeException("Circuit Breaker is opened: " + e.getMessage(), e);
-                                }
-                                throw new RuntimeException("Service error: " + e.getMessage(), e);
+                        } catch (CompanyServiceNetworkException | CompanyDocumentServiceNetworkException ex) {
+                                throw ex;
+                        } catch (CallNotPermittedException ex) {
+                                throw new CompanyServiceNetworkException(
+                                                "Circuit Breaker is opened: " + ex.getMessage(), ex);
+                        } catch (RuntimeException ex) {
+                                throw ex;
+                        } catch (Throwable ex) {
+                                throw new RuntimeException("Service error: " + ex.getMessage(), ex);
                         }
                 };
         }

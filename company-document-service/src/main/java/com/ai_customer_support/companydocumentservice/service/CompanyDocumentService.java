@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ai_customer_support.companydocumentservice.config.property.DocumentLoaderProperties;
 import com.ai_customer_support.companydocumentservice.dto.CompanyDocumentInfo;
 import com.ai_customer_support.companydocumentservice.dto.CompanyDto;
+import com.ai_customer_support.companydocumentservice.exception.CompanyServiceException;
+import com.ai_customer_support.companydocumentservice.exception.CompanyServiceNetworkException;
 import com.ai_customer_support.companydocumentservice.exception.InvalidDocumentInfoException;
 import com.ai_customer_support.companydocumentservice.model.CompanyDocument;
 import com.ai_customer_support.companydocumentservice.repository.CompanyDocumentRepository;
@@ -54,6 +56,9 @@ public class CompanyDocumentService {
             return true;
         } catch (InvalidDocumentInfoException e) {
             LOGGER.error("Invalid document info: ", e);
+        } catch (CompanyServiceNetworkException | CompanyServiceException e) {
+            LOGGER.error("An error occurred about Company Service. ");
+            throw e;
         } catch (Exception e) {
             LOGGER.error("Error occurred while uploading document: ", e);
         }
