@@ -1,5 +1,7 @@
 package com.ai_customer_support.apigateway.filter;
 
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -14,6 +16,8 @@ import reactor.core.publisher.Mono;
 public class GatewayGlobalFilter implements GlobalFilter, Ordered{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GatewayGlobalFilter.class);
+    private static final String CORRELATION_ID_HEADER = "X-Correlation-ID";
+
     @Override
     public int getOrder() {
         return 0;
@@ -21,12 +25,35 @@ public class GatewayGlobalFilter implements GlobalFilter, Ordered{
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        LOGGER.info("Global Pre-Filter: Request Address -> {}", exchange.getRequest().getURI().getPath());
+        String generatedCorrelationID = generateCorrelationID();
+        ServerWebExchange mutatedExchange = exchange.mutate()
+                .request(r -> r.header(CORRELATION_ID_HEADER, generatedCorrelationID))
+                .build();
 
-        return chain.filter(exchange)
+        // CorrelationID
+        LOGGER.info("Global Pre-Filter[{}]: Request Address -> {}", 
+                getCorrelationIDFromRequest(mutatedExchange),
+            mutatedExchange.getRequest().getURI().getPath());
+
+        return chain.filter(mutatedExchange)
                 .then(Mono.fromRunnable(() -> {
-                    LOGGER.info("Global Post-Filter: Response Status -> {}", exchange.getResponse().getStatusCode());
+                    mutatedExchange.getResponse().getHeaders().set(CORRELATION_ID_HEADER, generatedCorrelationID);
+                    LOGGER.info("Global Post-Filter[{}]: Response Status -> {}",
+                        getCorrelationIDFromResponse(mutatedExchange),
+                            mutatedExchange.getResponse().getStatusCode());
                 }));
+    }
+
+    private String generateCorrelationID(){
+        return UUID.randomUUID().toString();
+    }
+
+    private String getCorrelationIDFromRequest(ServerWebExchange exchange){
+        return exchange.getRequest().getHeaders().get(CORRELATION_ID_HEADER).getFirst();
+    }
+
+    private String getCorrelationIDFromResponse(ServerWebExchange exchange) {
+        return exchange.getResponse().getHeaders().get(CORRELATION_ID_HEADER).getFirst();
     }
 
 }
