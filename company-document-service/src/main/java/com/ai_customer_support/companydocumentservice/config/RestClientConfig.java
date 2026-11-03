@@ -3,6 +3,7 @@ package com.ai_customer_support.companydocumentservice.config;
 import org.apache.hc.client5.http.ConnectTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
 import org.springframework.boot.http.client.HttpClientSettings;
@@ -29,6 +30,8 @@ import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 public class RestClientConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestClientConfig.class);
+    private static final String CORRELATION_ID_HEADER = "X-Correlation-ID";
+    private static final String CORRELATION_ID = "correlationID";
 
     @Value("${services.company.url}")
     String companyUrl;
@@ -55,6 +58,7 @@ public class RestClientConfig {
                 .requestInterceptors(interceptors -> {
                     interceptors.add(circuitBreakerInterceptor());
                     interceptors.add(retryInterceptor());
+                    interceptors.add(correlationInterceptor());
                 })
                 .defaultStatusHandler(
                         HttpStatusCode::isError,
@@ -129,6 +133,18 @@ public class RestClientConfig {
             }catch (Throwable ex) {
                 throw new RuntimeException("Service error: " + ex.getMessage(), ex);
             }
+        };
+    }
+
+    private ClientHttpRequestInterceptor correlationInterceptor() {
+        return (request, body, execution) -> {
+            String correlationId = MDC.get(CORRELATION_ID);
+
+            if (correlationId != null) {
+                request.getHeaders().set(CORRELATION_ID_HEADER, correlationId);
+            }
+
+            return execution.execute(request, body);
         };
     }
 
