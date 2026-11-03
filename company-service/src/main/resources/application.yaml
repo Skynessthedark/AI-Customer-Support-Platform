@@ -20,3 +20,10 @@ spring:
 logging:
   pattern:
     console: "%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %magenta([correlationID:%X{correlationID}]) %yellow(%logger{15}) - %msg%n"
+
+management:
+  endpoint:
+    health:
+      group:
+        readiness:
+          include: readinessState,db
