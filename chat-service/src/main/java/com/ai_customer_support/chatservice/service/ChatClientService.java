@@ -31,7 +31,7 @@ public class ChatClientService {
     public String getAIResponseForCompanyCustomer(String companyId, String username, String message) {
         String similarContext = restService.getSimilarContextForCompany(companyId, message);
 
-        if (similarContext == null || similarContext.isEmpty()) {
+        if (similarContext == null || similarContext.isBlank()) {
             return NO_RELEVANT_CONTEXT_MESSAGE;
         }
 

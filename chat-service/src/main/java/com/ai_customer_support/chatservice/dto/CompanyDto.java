@@ -11,7 +11,7 @@ public record CompanyDto(
     @NotBlank(message = "Authorized person email is required") String authorizedPersonEmail,
     String authorizedPersonName,
     String authorizedPersonPhone,
-    Integer knowledgeVersion,
+    @NotBlank(message = "Knowledge version cannot be null")Integer knowledgeVersion,
     String createdAt,
     String updatedAt) {
 
