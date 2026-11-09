@@ -10,7 +10,6 @@ services:
   company-document:
     url: http://localhost:8082
     endpoints: 
-      upload: /api/company-document/upload
       similar-context: /api/company-document/similar-context
       
 spring:

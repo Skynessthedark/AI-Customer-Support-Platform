@@ -61,7 +61,7 @@ public class RestService {
     }
 
     public String getSimilarContextForCompany(String companyId, String message) {
-        if (isCompanyIdInvalid(companyId) || message.isEmpty()) return null;
+        if (isCompanyIdInvalid(companyId) || message == null || message.isBlank()) return null;
 
         try {
             return companyDocumentRestClient.get()
@@ -79,16 +79,16 @@ public class RestService {
 
 
     private boolean isCompanyIdInvalid(String id){
-        return id == null || id.isEmpty();
+        return id == null || id.isBlank();
     }
 
-    private String generateCompanyUrl(String companyId) {
+    public String generateCompanyUrl(String companyId) {
         return UriComponentsBuilder.fromUriString(companyServiceEndpoints.getCompanyById())
                 .buildAndExpand(companyId)
                 .toUriString();
     }
 
-    private String generateKnowledgeVersionUrl(String companyId) {
+    public String generateKnowledgeVersionUrl(String companyId) {
         return UriComponentsBuilder.fromUriString(companyServiceEndpoints.getKnowledgeVersionIncrement())
                 .buildAndExpand(companyId)
                 .toUriString();
