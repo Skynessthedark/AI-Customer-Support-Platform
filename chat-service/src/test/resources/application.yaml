@@ -4,3 +4,9 @@ spring:
       enabled: false
   config:
     import: ""
+
+services:
+  company:
+    url: http://company-service
+  company-document:
+    url: http://company-document-service

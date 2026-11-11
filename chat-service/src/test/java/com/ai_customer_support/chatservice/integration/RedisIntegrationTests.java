@@ -1,4 +1,4 @@
-package com.ai_customer_support.chatservice.entegration;
+package com.ai_customer_support.chatservice.integration;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -40,7 +40,7 @@ import com.ai_customer_support.chatservice.service.RestService;
 @TestPropertySource(properties = {
         "spring.ai.open-ai.api-key=${OPENAI_API_KEY}",
         "logging.level.org.springframework.ai=DEBUG" })
-public class RedisEntegrationTests {
+public class RedisIntegrationTests {
 
     @Container
     static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("pgvector/pgvector:pg16")

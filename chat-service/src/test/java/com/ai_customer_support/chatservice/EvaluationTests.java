@@ -1,4 +1,4 @@
-package com.ai_customer_support.chatservice.controller;
+package com.ai_customer_support.chatservice;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -35,7 +35,7 @@ import com.ai_customer_support.chatservice.service.RestService;
 @TestPropertySource(properties = {
 	"spring.ai.open-ai.api-key=${OPENAI_API_KEY}",
 	"logging.level.org.springframework.ai=DEBUG"})
-public class ChatControllerTests {
+public class EvaluationTests {
 
     @Autowired 
     private ChatController chatController;
