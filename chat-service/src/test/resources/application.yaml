@@ -2,11 +2,25 @@ spring:
   cloud:
     config:
       enabled: false
+    discovery:
+      enabled: false
   config:
     import: ""
+  ai:
+    openai:
+      api-key: test-dummy-key
 
 services:
   company:
     url: http://company-service
+    endpoints:
+      company-by-id: /api/company/{id}
+      knowledge-version-increment: /api/company/{id}/increase-knowledge-version
   company-document:
     url: http://company-document-service
+    endpoints:
+      similar-context: /api/company-document/similar-context
+
+eureka:
+  client:
+    enabled: false

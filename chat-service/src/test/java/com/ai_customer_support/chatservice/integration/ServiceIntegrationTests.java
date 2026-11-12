@@ -34,11 +34,7 @@ import com.ai_customer_support.chatservice.service.RestService;
 
 import redis.clients.jedis.RedisClient;
 
-@SpringBootTest(properties = {
-        "spring.ai.openai.api-key=test-dummy-key",
-        "eureka.client.enabled=false",
-        "spring.cloud.discovery.enabled=false"
-})
+@SpringBootTest
 @AutoConfigureMockMvc
 public class ServiceIntegrationTests {
 

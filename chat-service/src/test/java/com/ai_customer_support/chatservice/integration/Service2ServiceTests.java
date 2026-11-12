@@ -23,14 +23,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 import redis.clients.jedis.RedisClient;
 
-@SpringBootTest(properties = {
-        "spring.ai.openai.api-key=test-dummy-key",
-        "eureka.client.enabled=false",
-        "spring.cloud.discovery.enabled=false",
-        "services.company.endpoints.company-by-id=/api/company/{id}",
-        "services.company.endpoints.knowledge-version-increment=/api/company/{id}/increase-knowledge-version",
-        "services.company-document.endpoints.similar-context=/api/company-document/similar-context"
-})
+@SpringBootTest
 @EnableWireMock({
     @ConfigureWireMock(
         name = "company-service",
